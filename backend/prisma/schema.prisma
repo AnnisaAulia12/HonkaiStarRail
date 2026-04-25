@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int         @id @default(autoincrement())
+  username    String      @unique
+  email       String      @unique
+  password    String? 
+  role        String      @default("customer") 
+  oauth_provider String?          
+  oauth_id       String?// id unik dari provider
+  createdAt      DateTime    @default(now())
+  purchases      Purchase[] 
+}
+
+model LightCones{
+  id            Int       @id @default(autoincrement())
+  name          String
+  type          String
+  rarity        Int
+  level         Int
+  hp            Float
+  atk           Float
+  def           Float
+  description   String      @db.Text
+  price         Float
+  stock         Int
+  createdAt     DateTime    @default(now())
+  purchases   Purchase[] 
+}
+
+model GalacticResources{
+  id             Int         @id @default(autoincrement())
+  name           String
+  rarity         Int         
+  description    String      @db.Text
+  price          Float
+  stock          Int
+  createdAt      DateTime    @default(now())
+  purchases      Purchase[]  
+}
+
+model Purchase {
+  id                Int                @id @default(autoincrement())
+  quantity          Int                
+  totalPrice        Float              
+  category          String             
+  createdAt         DateTime           @default(now())
+
+  // relasi ke user
+  userId            Int
+  user              User               @relation(fields: [userId], references: [id])
+
+  // relasi ke light cone (boleh kosong kalau beli galactic resource)
+  lightConeId       Int?
+  lightCones         LightCones?         @relation(fields: [lightConeId], references: [id])
+
+  // relasi ke galactic resource (boleh kosong kalau beli light cone)
+  galacticResourceId Int?
+  galacticResources   GalacticResources? @relation(fields: [galacticResourceId], references: [id])
+}
+
