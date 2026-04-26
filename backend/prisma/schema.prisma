@@ -8,8 +8,58 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id             Int        @id @default(autoincrement())
+  username       String     @unique
+  email          String     @unique
+  password       String?
+  role           String     @default("customer")
+  oauth_provider String?
+  oauth_id       String?
+  token          String?
+  createdAt      DateTime   @default(now())
+  purchases      Purchase[]
+}
+
+model LightCones {
+  id          Int        @id @default(autoincrement())
+  name        String
+  type        String
+  rarity      Int
+  level       Int
+  hp          Float
+  atk         Float
+  def         Float
+  description String     @db.Text
+  image       String
+  price       Float
+  stock       Int
+  createdAt   DateTime   @default(now())
+  purchases   Purchase[]
+}
+
+model GalacticResources {
+  id          Int        @id @default(autoincrement())
+  name        String
+  type        String
+  description String     @db.Text
+  image       String
+  price       Float
+  stock       Int
+  createdAt   DateTime   @default(now())
+  purchases   Purchase[]
+}
+
+model Purchase {
+  id                  Int                @id @default(autoincrement())
+  quantity            Int
+  totalPrice          Float
+  category            String
+  status              String             @default("pending")
+  createdAt           DateTime           @default(now())
+  userId              Int
+  user                User               @relation(fields: [userId], references: [id])
+  lightConesId        Int?
+  lightCones          LightCones?        @relation(fields: [lightConesId], references: [id])
+  galacticResourcesId Int?
+  galacticResources   GalacticResources? @relation(fields: [galacticResourcesId], references: [id])
 }
