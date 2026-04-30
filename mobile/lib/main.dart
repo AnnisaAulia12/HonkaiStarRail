@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/Login.dart';
 import 'screens/ExploreLightCones.dart';
+import 'screens/ExploreGalacticPage.dart';
 
 void main() {
   runApp(const MyApp());

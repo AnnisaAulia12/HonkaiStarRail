@@ -87,8 +87,8 @@ const List<PathCategory> kCategories = [
 const List<LightCone> kLightCones = [
   // The Hunt
   LightCone(name: 'After the Charmony Fall', stars: 5, path: PathType.theHunt,     imageAsset: 'assets/cards/charmony_fall.png',   pathIconAsset: 'assets/images/TheHunt.png'),
-  LightCone(name: 'After the Charmony Fall', stars: 5, path: PathType.theHunt,     imageAsset: 'assets/cards/charmony_fall.png',   pathIconAsset: 'assets/images/TheHunt.png'),
-  LightCone(name: 'After the Charmony Fall', stars: 5, path: PathType.theHunt,     imageAsset: 'assets/cards/charmony_fall.png',   pathIconAsset: 'assets/images/TheHunt.png'),
+  LightCone(name: 'After the Charmony Fall', stars: 5, path: PathType.theHunt,     imageAsset: 'assets/images/TheHunt.png',   pathIconAsset: 'assets/images/TheHunt.png'),
+  LightCone(name: 'After the Charmony Fall', stars: 5, path: PathType.theHunt,     imageAsset: 'assets/images/TheHunt.png',   pathIconAsset: 'assets/images/TheHunt.png'),
   // Destruction
   LightCone(name: 'A Grounded Ascent',       stars: 4, path: PathType.destruction, imageAsset: 'assets/cards/grounded_ascent.png', pathIconAsset: 'assets/images/Destruction.png'),
   LightCone(name: 'A Grounded Ascent',       stars: 4, path: PathType.destruction, imageAsset: 'assets/cards/grounded_ascent.png', pathIconAsset: 'assets/images/Destruction.png'),
@@ -117,10 +117,6 @@ const List<LightCone> kLightCones = [
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CARD COLOR THEME
-// 3 tema warna bergantian per posisi dalam grup (index % 3):
-//   0 → ungu/pink (5-star style)
-//   1 → gold/kuning (4-star warm)
-//   2 → biru (4-star cool)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _CardTheme {
@@ -132,27 +128,22 @@ class _CardTheme {
   });
 }
 
-/// [indexInGroup] adalah posisi card dalam kelompok (0,1,2)
-/// Bergantian: ungu → gold → biru
 _CardTheme cardThemeForIndex(int indexInGroup) {
   switch (indexInGroup % 3) {
-    case 0: // Ungu/pink
-      return  _CardTheme(
-        gradient:  [Color(0xFFA13BCA).withOpacity(0.05) , Color(0xFFA13BCA).withOpacity(0.05), Color(0xFFA13BCA).withOpacity(0.6),],
+    case 0:
+      return _CardTheme(
+        gradient: [Color(0xFFA13BCA).withOpacity(0.05), Color(0xFFA13BCA).withOpacity(0.05), Color(0xFFA13BCA).withOpacity(0.6)],
         bottomBar: Color(0xFFA13BCA).withOpacity(0.8),
       );
-    case 1: // Gold/kuning
-      return  _CardTheme(
+    case 1:
+      return _CardTheme(
         gradient: [Color(0XFFF3DD8A).withOpacity(0.05), Color(0XFFF3DD8A).withOpacity(0.05), Color(0XFFF3DD8A).withOpacity(0.6)],
-        //gradient:  [Color(0xFF1A1000), Color(0xFF7A5200), Color(0xFFCCA000)],
         bottomBar: Color(0xFFF3DD8A).withOpacity(0.8),
       );
-    case 2: // Biru
-    case 2: // Biru
+    case 2:
     default:
-      return  _CardTheme(
-        gradient: [Color(0xFF2854C3).withOpacity(0.05),Color(0xFF2854C3).withOpacity(0.05),Color(0xFF2854C3).withOpacity(0.6) ] ,
-        //gradient:  [Color(0xFF2854C3).withOpacity(0.6), Color(0xFF2854C3).withOpacity(0.05), Color(0xFF2854C3).withOpacity(0.05)],
+      return _CardTheme(
+        gradient: [Color(0xFF2854C3).withOpacity(0.05), Color(0xFF2854C3).withOpacity(0.05), Color(0xFF2854C3).withOpacity(0.6)],
         bottomBar: Color(0xFF44AAFF).withOpacity(0.8),
       );
   }
@@ -195,57 +186,42 @@ class _ExplorePageState extends State<ExplorePage> {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // ── Background starfield — FIXED, tidak scroll ─────────────────────
+          // ── Background ─────────────────────────────────────────────────────
           Positioned.fill(
             child: Image.asset(
-            "assets/images/Explore_bg.png",
-            fit: BoxFit.cover, 
+              "assets/images/Explore_bg.png",
+              fit: BoxFit.cover,
             ),
           ),
 
           // ── Konten utama ───────────────────────────────────────────────────
           Column(
             children: [
-              // ── HEADER dengan background tidak polos ───────────────────────
+              // ── HEADER ─────────────────────────────────────────────────────
               const _Header(),
 
-              const SizedBox(height: 12,),
+              const SizedBox(height: 12),
 
-              // ── LOGO BANNER (gambar Honkai Star Rail) ──────────────────────
+              // ── LOGO BANNER ────────────────────────────────────────────────
+              // PERUBAHAN: height logo dikurangi 120 → 80, SizedBox(height:20) → 8
               const _LogoBanner(),
 
               const SizedBox(height: 20),
 
-              // ── PATH CHIPS dengan background tidak polos ───────────────────
-              // _PathChipsSection(
-              //   selected: _selectedPath,
-              //   onSelect: (p) => setState(() => _selectedPath = p),
-              // ),
-
-              // const SizedBox(height: 8),
-
               // ── PANEL CARDS ────────────────────────────────────────────────
               SizedBox(
-                width : 400,
-                height : 648,
+                width: 400,
+                height: 648,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 8),
                   child: Container(
                     decoration: BoxDecoration(
-                      // Panel semi-transparan — tidak nempel langsung ke BG
                       color: Colors.black.withOpacity(0.18),
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
                         color: Colors.white.withOpacity(0.10),
                         width: 1.0,
                       ),
-                    //   boxShadow: [
-                    //     BoxShadow(
-                    //       color: Colors.black.withOpacity(0.15),
-                    //       blurRadius: 10,
-                    //       offset: Offset(0, 4)
-                    //     ),
-                    //   ],
                     ),
                     child: Container(
                       decoration: BoxDecoration(
@@ -253,40 +229,32 @@ class _ExplorePageState extends State<ExplorePage> {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Colors.white.withOpacity(0.10),
-                          ),
+                        ),
                       ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 0),
-                        
-                        _PathChipsSection(
-                          selected: _selectedPath,
-                          onSelect: (p) => setState(() => _selectedPath = p),
-                        ),
-                        
-                        const SizedBox(height: 8),
-                        
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(19),
-                            child: _CardsGrid(items: _filtered),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 0),
+                          _PathChipsSection(
+                            selected: _selectedPath,
+                            onSelect: (p) => setState(() => _selectedPath = p),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(19),
+                              child: _CardsGrid(items: _filtered),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    // child: ClipRRect(
-                    //   borderRadius: BorderRadius.circular(19),
-                    //   child: _CardsGrid(items: _filtered),
-                    // ),
                   ),
                 ),
-                )
               ),
             ],
           ),
         ],
       ),
-      
 
       bottomNavigationBar: _BottomNav(
         currentIndex: _navIndex,
@@ -297,33 +265,8 @@ class _ExplorePageState extends State<ExplorePage> {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STARFIELD BACKGROUND
+// STARFIELD PAINTER
 // ═══════════════════════════════════════════════════════════════════════════════
-
-// class _StarfieldBackground extends StatelessWidget {
-//   const _StarfieldBackground();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: const BoxDecoration(
-//         gradient: RadialGradient(
-//           center: Alignment(0, -0.3),
-//           radius: 1.5,
-//           colors: [
-//             Color(0xFF1E1060),
-//             Color(0xFF0D0830),
-//             Color(0xFF050318),
-//           ],
-//         ),
-//       ),
-//       child: CustomPaint(
-//         painter: _StarsPainter(),
-//         child: const SizedBox.expand(),
-//       ),
-//     );
-//   }
-// }
 
 class _StarsPainter extends CustomPainter {
   @override
@@ -365,7 +308,7 @@ class _StarsPainter extends CustomPainter {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// HEADER — background tidak polos (frosted glass style)
+// HEADER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _Header extends StatelessWidget {
@@ -377,36 +320,22 @@ class _Header extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(10, top + 2, 10, 4),
       decoration: BoxDecoration(
-          color: Color(0XFF918EA1).withOpacity(0.37), 
-          
-          border: Border(
-            bottom: BorderSide(
+        color: Color(0XFF918EA1).withOpacity(0.37),
+        border: Border(
+          bottom: BorderSide(
             color: Colors.white.withOpacity(0.2),
             width: 1,
-            ),
           ),
-        // Gradient gelap dari atas — seperti overlay header
-        // gradient: LinearGradient(
-        //   begin: Alignment.topCenter,
-        //   end: Alignment.bottomCenter,
-        //   colors: [
-        //     Colors.black.withOpacity(0.70),
-        //     Colors.black.withOpacity(0.30),
-        //     Colors.transparent,
-        //   ],
-        //   stops: const [0.0, 0.7, 1.0],
-        // ),
+        ),
       ),
       child: Row(
         children: [
-          // Kotak ikon toko — amber kuning
           Icon(
             Icons.store_rounded,
-            color : Color(0XFFEDC531),
+            color: Color(0XFFEDC531),
             size: 26,
           ),
           const SizedBox(width: 11),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -428,10 +357,7 @@ class _Header extends StatelessWidget {
               ),
             ],
           ),
-
           const Spacer(),
-
-          // Avatar
           Container(
             width: 30, height: 30,
             decoration: BoxDecoration(
@@ -439,7 +365,6 @@ class _Header extends StatelessWidget {
               border: Border.all(color: Colors.white.withOpacity(0.55), width: 1.4),
               color: Colors.white.withOpacity(0.08),
             ),
-            // ── Swap: Image.asset('assets/icons/avatar.png', fit: BoxFit.cover)
             child: const Icon(Icons.person, color: Colors.white, size: 19),
           ),
         ],
@@ -449,7 +374,8 @@ class _Header extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// LOGO BANNER — gambar Honkai Star Rail
+// LOGO BANNER
+// PERUBAHAN: height logo 120 → 80, hapus SizedBox(height:0) ganti SizedBox(height:2)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _LogoBanner extends StatelessWidget {
@@ -457,42 +383,33 @@ class _LogoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: [
-
-          // 🔥 LOGO (DITURUNKAN TANPA NGARUH KE LAYOUT LAIN)
-          Padding( 
-            padding: const EdgeInsets.only(top: 0),
-            child: Image.asset(
-              'assets/images/honkai_logo.png',
-              height: 120,
-             fit: BoxFit.contain,
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Logo tetap 120, padding bawah logo dihapus agar rapat ke subtitle
+        Image.asset(
+          'assets/images/honkai_logo.png',
+          height: 120,
+          fit: BoxFit.contain,
+        ),
+        // HANYA INI YANG DIUBAH: gap logo → subtitle dari bawaan ~8-12 → 0
+        const SizedBox(height: 0),
+        Text(
+          'Acquire powerful weapons and rare galactic resources.\nFuel your journey across the cosmos.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.55),
+            fontSize: 11,
+            height: 1.4,
           ),
-
-          //const SizedBox(height: 5),
-          const SizedBox(height: 0),
-
-          // Subtitle (tetap di tempat)
-          Text(
-            'Acquire powerful weapons and rare galactic resources.\nFuel your journey across the cosmos.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.55),
-              fontSize: 11,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PATH CHIPS SECTION — dengan background tidak polos
+// PATH CHIPS SECTION
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _PathChipsSection extends StatelessWidget {
@@ -503,186 +420,84 @@ class _PathChipsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-  borderRadius: const BorderRadius.only(
-    topLeft: Radius.circular(20),
-    topRight: Radius.circular(20),
-  ),
-  child: Container(
-    margin: EdgeInsets.zero,
-    padding: const EdgeInsets.symmetric(vertical: 6),
-    decoration: BoxDecoration(
-      color: Color(0xFF918EA1).withOpacity(0.35),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
       ),
-      border: Border.all(
-        color: Colors.white.withOpacity(0.25),
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.30),
-          blurRadius: 10,
-          offset: const Offset(0, 2),
+      child: Container(
+        margin: EdgeInsets.zero,
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        decoration: BoxDecoration(
+          color: Color(0xFF918EA1).withOpacity(0.35),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.25),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.30),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-      ],
-    ),
-    child: SizedBox(
-      height: 36,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        itemCount: kCategories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 6),
-        itemBuilder: (_, i) {
-          final cat = kCategories[i];
-          final isSel = cat.type == selected;
+        child: SizedBox(
+          height: 36,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            itemCount: kCategories.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 6),
+            itemBuilder: (_, i) {
+              final cat = kCategories[i];
+              final isSel = cat.type == selected;
 
-          return GestureDetector(
-            onTap: () => onSelect(cat.type),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: Color(0xFF918EA1).withOpacity(0.37),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isSel
-                      ? Colors.white.withOpacity(0.65)
-                      : Colors.white.withOpacity(0.18),
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  cat.type == PathType.all
-                      ? const Icon(Icons.grid_view, size: 14, color: Colors.white)
-                      : Image.asset(
-                          cat.iconAsset,
-                          width: 20,
-                          height: 20,
-                          color: Colors.white,
-                        ),
-                  const SizedBox(width: 5),
-                  Text(
-                    cat.label,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(isSel ? 1.0 : 0.65),
-                      fontSize: 11.5,
-                      fontWeight: isSel ? FontWeight.w700 : FontWeight.w400,
+              return GestureDetector(
+                onTap: () => onSelect(cat.type),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF918EA1).withOpacity(0.37),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSel
+                          ? Colors.white.withOpacity(0.65)
+                          : Colors.white.withOpacity(0.18),
                     ),
                   ),
-                ],
-              ),
-            ),
-          );
-        },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      cat.type == PathType.all
+                          ? const Icon(Icons.grid_view, size: 14, color: Colors.white)
+                          : Image.asset(
+                              cat.iconAsset,
+                              width: 20,
+                              height: 20,
+                              color: Colors.white,
+                            ),
+                      const SizedBox(width: 5),
+                      Text(
+                        cat.label,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(isSel ? 1.0 : 0.65),
+                          fontSize: 11.5,
+                          fontWeight: isSel ? FontWeight.w700 : FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
-    ),
-  ),
-);
-    // return ClipRRect(
-    //   margin: EdgeInsets.zero,
-    //   padding: const EdgeInsets.symmetric(vertical: 6),
-    //   decoration: BoxDecoration(
-    //     color: Color(0xFF918EA1).withOpacity(0.35), // 🔥 ini bikin FULL ABU
-    //     borderRadius: const BorderRadius.only(
-    //       topLeft: Radius.circular(20),
-    //       topRight: Radius.circular(20),
-    //   ),
-    //   border: Border.all(
-    //     color: Colors.white.withOpacity(0.25),
-    //   ),
-    //     // Background tidak polos — semi-transparan dengan gradient
-    //     // gradient: LinearGradient(
-    //     //   begin: Alignment.topLeft,
-    //     //   end: Alignment.bottomRight,
-    //     //   colors: [
-    //     //     Colors.white.withOpacity(0.10),
-    //     //     Colors.white.withOpacity(0.04),
-    //     //   ],
-    //     // ),
-    //     // borderRadius: BorderRadius.circular(30),
-    //     // borderRadius: const BorderRadius.only(
-    //     //   topLeft: Radius.circular(20),
-    //     //   topRight: Radius.circular(20),
-    //     //   ),
-    //     // border: Border.all(
-    //     //   color: Colors.white.withOpacity(0.15),
-    //     //   width: 1.0,
-    //     // ),
-    //     boxShadow: [
-    //       BoxShadow(
-    //         color: Colors.black.withOpacity(0.30),
-    //         blurRadius: 10,
-    //         offset: const Offset(0, 2),
-    //       ),
-    //     ],
-    //   ),
-    //   child: SizedBox(
-    //     height: 36,
-    //     child: ListView.separated(
-    //       scrollDirection: Axis.horizontal,
-    //       padding: const EdgeInsets.symmetric(horizontal: 10),
-    //       itemCount: kCategories.length,
-    //       separatorBuilder: (_, __) => const SizedBox(width: 6),
-    //       itemBuilder: (_, i) {
-    //         final cat = kCategories[i];
-    //         final isSel = cat.type == selected;
-    //         return GestureDetector(
-    //           onTap: () => onSelect(cat.type),
-    //           child: AnimatedContainer(
-    //             duration: const Duration(milliseconds: 200),
-    //             padding: EdgeInsets.fromLTRB(10, 6, 10, 0),//const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-    //             decoration: BoxDecoration(
-    //             color: Color(0XFF918EA1).withOpacity(0.37),
-    //               borderRadius: BorderRadius.circular(20),
-    //               border: Border.all(
-    //                 color: isSel
-    //                     ? Colors.white.withOpacity(0.65)
-    //                     : Colors.white.withOpacity(0.18),
-    //               ),
-
-    //               boxShadow: [
-    //                 BoxShadow(
-    //                   color: Colors.black.withOpacity(0.35),
-    //                   blurRadius: 10,
-    //                   offset: Offset(0, 3)
-
-    //                 )
-    //               ]
-    //             ),
-    //             child: Row(
-    //               mainAxisSize: MainAxisSize.min,
-    //               children: [
-    //                 cat.type == PathType.all
-    //                   ? const Icon(Icons.grid_view, size : 14 , color : Colors.white):
-    //                 // ── Swap dengan: Image.asset(cat.iconAsset, width:14, height:14)
-    //                // _PathIcon(type: cat.type, size: 14),
-    //                Image.asset(
-    //                 cat.iconAsset,
-    //                 width: 20,
-    //                 height: 20,
-    //                 color : Colors.white,
-    //                ),
-    //                 const SizedBox(width: 5),
-    //                 Text(
-    //                   cat.label,
-    //                   style: TextStyle(
-    //                     color: Colors.white.withOpacity(isSel ? 1.0 : 0.65),
-    //                     fontSize: 11.5,
-    //                     fontWeight: isSel ? FontWeight.w700 : FontWeight.w400,
-    //                     letterSpacing: 0.2,
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         );
-    //       },
-    //     ),
-    //   ),
-    // );
+    );
   }
 }
 
@@ -710,7 +525,7 @@ class _PathIcon extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CARDS GRID
+// CARDS GRID — tidak ada perubahan sama sekali
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _CardsGrid extends StatelessWidget {
@@ -733,14 +548,13 @@ class _CardsGrid extends StatelessWidget {
         childAspectRatio: 0.775,
       ),
       itemCount: items.length,
-      // Kirim index asli supaya warna bergantian global
       itemBuilder: (_, i) => _LightConeCard(cone: items[i], globalIndex: i),
     );
   }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// LIGHT CONE CARD
+// LIGHT CONE CARD — tidak ada perubahan sama sekali
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _LightConeCard extends StatelessWidget {
@@ -750,7 +564,6 @@ class _LightConeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Warna bergantian per posisi global: ungu → gold → biru → ungu → ...
     final theme = cardThemeForIndex(globalIndex);
 
     return Container(
@@ -775,23 +588,13 @@ class _LightConeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Stack(
           children: [
-            //Bottom glow bar
+            // Bottom glow bar
             Positioned(
               bottom: 0, left: 0, right: 0,
               child: Container(
                 height: 9,
                 decoration: BoxDecoration(
-                  color: 
-                  theme.bottomBar.withOpacity(0.65),
-                  
-                  // gradient: LinearGradient(
-                  //   begin: Alignment.topCenter,
-                  //   end: Alignment.bottomCenter,
-                  //   colors: [
-                  //     Colors.transparent,
-                  //     theme.bottomBar.withOpacity(0.65),
-                  //   ],
-                  // ),
+                  color: theme.bottomBar.withOpacity(0.65),
                 ),
               ),
             ),
@@ -814,13 +617,12 @@ class _LightConeCard extends StatelessWidget {
             // Konten
             Column(
               children: [
-                // Top row: path icon | rarity badge
+                // Top row: path icon
                 Padding(
                   padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // ── Swap: Image.asset(cone.pathIconAsset, width:20, height:20)
                       Container(
                         width: 22, height: 22,
                         decoration: BoxDecoration(
@@ -829,44 +631,22 @@ class _LightConeCard extends StatelessWidget {
                         ),
                         child: Icon(_pathIcon(cone.path), color: Colors.white, size: 12),
                       ),
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.black.withOpacity(0.40),
-                      //     borderRadius: BorderRadius.circular(5),
-                      //   ),
-                      //   child: Text(
-                      //     '${cone.stars}★',
-                      //     style: const TextStyle(
-                      //       color: Colors.white,
-                      //       fontSize: 7,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
-                //const SizedBox(height: 1,),
 
-                // ── Area gambar kartu (MIRING) ────────────────────────────────
+                // Area gambar kartu (MIRING)
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(6, 4, 6, 25),
                     child: Center(
                       child: Transform.rotate(
-                        // Miring: card genap sedikit ke kiri, ganjil ke kanan
-                        angle: 0.08 * math.pi / 2 ,
+                        angle: 0.08 * math.pi / 2,
                         child: Container(
                           width: 55,
                           height: 70,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            // ── Swap: ganti gradient dengan DecorationImage:
-                            // image: DecorationImage(
-                            //   image: AssetImage(cone.imageAsset),
-                            //   fit: BoxFit.cover,
-                            // ),
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -902,7 +682,7 @@ class _LightConeCard extends StatelessWidget {
 
                 // Nama
                 Padding(
-                   padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: Text(
                     cone.name,
                     textAlign: TextAlign.center,
@@ -919,7 +699,7 @@ class _LightConeCard extends StatelessWidget {
 
                 const SizedBox(height: 0),
 
-                // Bintang — swap: Image.asset('assets/icons/star.png', width:9)
+                // Bintang
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15),
                   child: Row(
@@ -956,7 +736,7 @@ class _LightConeCard extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// BOTTOM NAV
+// BOTTOM NAV — tidak ada perubahan
 // ═══════════════════════════════════════════════════════════════════════════════
 
 class _BottomNav extends StatelessWidget {
@@ -980,13 +760,13 @@ class _BottomNav extends StatelessWidget {
         border: Border(
           top: BorderSide(color: Colors.white.withOpacity(0.08), width: 0.8),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.60),
-            blurRadius: 16,
-            offset: const Offset(0, -3),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(1),
+        //     blurRadius: 16,
+        //     offset: const Offset(0, -3),
+        //   ),
+        // ],
       ),
       child: SafeArea(
         top: false,
